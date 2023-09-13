@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      - SERVICES=sqs
+      - DATA_DIR=/tmp/localstack/data-new
+      - AWS_DEFAULT_REGION=us-west-2
+      - DEFAULT_REGION=us-west-2
+    volumes:
+      - ./localstack/init.sh:/docker-entrypoint-initaws.d/setup-dev-env.sh
